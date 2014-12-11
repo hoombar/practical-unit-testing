@@ -21,14 +21,17 @@ public class TimeProviderTest {
 	Calendar calendar = Calendar.getInstance();
 	TimeProvider timeProvider = new TimeProvider();
 	
+	@SuppressWarnings("unused")
 	private static final Object[] getMorningHours() {
 		return $(0,1,2,3,4,5,6,7,8,9,10,11);
 	}
 	
+	@SuppressWarnings("unused")
 	private static final Object[] getAfternoonHours() {
 		return $(12,13,14,15,16,17);
 	}
 	
+	@SuppressWarnings("unused")
 	private static final Object[] getEveningHours() {
 		return $(18,19,20,21,22,23);
 	}
