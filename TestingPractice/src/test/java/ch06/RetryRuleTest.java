@@ -14,7 +14,7 @@ public class RetryRuleTest {
 	static int executionNumber = 0;
 	
 	@Test
-	@Retry
+	@Retry(times = 6)
 	public void shouldBeReRun() {
 		executionNumber++;
 		System.out.println("execution: " + executionNumber);
