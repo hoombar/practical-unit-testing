@@ -16,8 +16,6 @@ public class PreserveSystemPropertiesRule implements TestRule {
 	public void setValues(Map<String, String> values) {
 		this.values = values;
 
-		System.out.println("setup rulke");
-		
 		boolean validValues = false;
 		if (values.containsKey(KEY)) {
 			if (values.get(KEY).equals(VALUE)) {
