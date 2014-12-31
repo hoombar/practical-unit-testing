@@ -1,6 +1,5 @@
 package main.java.ch10;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +15,7 @@ public class CarSearch {
 		List<Car> sportsCars = new ArrayList<Car>();
 		
 		for (Car car : cars) {
-			if (car.getEngine().getNbOfCylinders() > 6
-					&& Color.RED == car.getColor()
-					&& "Ferrari".equals(car.getManufacturer().getName())) {
-				
+			if (car.isSportsCar()) {
 				sportsCars.add(car);
 			}
 		}
