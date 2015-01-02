@@ -1,11 +1,6 @@
 package test.java.ch11;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import static org.fest.assertions.api.Assertions.assertThat;
 import main.java.ch11.Fridge;
 import main.java.ch11.NoSuchItemException;
 
@@ -13,51 +8,59 @@ import org.junit.Test;
 
 public class FridgeTest {
 
+	Fridge fridge = new Fridge();
+	final String ITEM_CHEESE = "cheese";
+	final String ITEM_HAM = "ham";
+	final String ITEM_SAUSAGE = "sausage";
+	
 	@Test
-	public void testFridge() {
-		Fridge fridge = new Fridge();
-		
-		fridge.put("cheese");
-		assertEquals(true, fridge.contains("cheese"));
-		assertEquals(false, fridge.put("cheese"));
-		assertEquals(true, fridge.contains("cheese"));
-		
-		assertEquals(false, fridge.contains("ham"));
-		
-		fridge.put("ham");
-		assertEquals(true, fridge.contains("cheese"));
-		assertEquals(true, fridge.contains("ham"));
-		
-		try {
-			fridge.take("sausage");
-			fail("There was no sausage in the fridge!");
-		} catch (NoSuchItemException ex) {
-			// ok
-		}
+	public void fridgeShouldAllowNewItemAdded() {
+		assertThat(fridge.put(ITEM_CHEESE)).isEqualTo(true);
 	}
 	
 	@Test
-	public void testPutTake() throws NoSuchItemException {
-		Fridge fridge = new Fridge();
-		List<String> food = new ArrayList<String>();
-		food.add("yogurt");
-		food.add("milk");
-		food.add("eggs");
-		for (String item : food) {
-			fridge.put(item);
-			assertEquals(true, fridge.contains(item));
-			fridge.take(item);
-			assertEquals(false, fridge.contains(item));
-		}
-		
-		for (String item : food) {
-			try {
-				fridge.take(item);
-				fail("There was no " + item + " in the fridge");
-			} catch (NoSuchItemException ex) {
-				assertEquals(true, ex.getMessage().contains(item));
-			}
-		}
+	public void shouldNotAllowMoreThanOneOfSameItem() {
+		fridge.put(ITEM_CHEESE);
+		assertThat(fridge.put(ITEM_CHEESE)).isEqualTo(false);
+	}
+	
+	@Test
+	public void canAddMultipleItems() {
+		assertThat(fridge.put(ITEM_CHEESE)).isEqualTo(true);
+		assertThat(fridge.put(ITEM_HAM)).isEqualTo(true);
+		assertThat(fridge.put(ITEM_SAUSAGE)).isEqualTo(true);
+	}
+	
+	@Test
+	public void fridgeShouldContainItemPutIn() {
+		fridge.put(ITEM_CHEESE);
+		assertThat(fridge.contains(ITEM_CHEESE)).isEqualTo(true);
+	}
+	
+	@Test
+	public void fridgeShouldNotContainItemsNotPutIn() {
+		assertThat(fridge.contains(ITEM_HAM)).isEqualTo(false);
+		fridge.put(ITEM_HAM);
+		assertThat(fridge.contains(ITEM_CHEESE)).isEqualTo(false);
+	}
+	
+	@Test
+	public void checkContainsDoesNotRemoveItems() {
+		fridge.put(ITEM_CHEESE);
+		fridge.contains(ITEM_CHEESE);
+		assertThat(fridge.contains(ITEM_CHEESE)).isEqualTo(true);
+	}
+	
+	@Test
+	public void canTakeItemInFridge() throws NoSuchItemException {
+		fridge.put(ITEM_CHEESE);
+		fridge.take(ITEM_CHEESE);
+		assertThat(fridge.contains(ITEM_CHEESE)).isEqualTo(false);
+	}
+	
+	@Test(expected = NoSuchItemException.class)
+	public void fridgeShouldThrowExceptionWhenTakingInvalidItem() throws NoSuchItemException {
+		fridge.take(ITEM_CHEESE);
 	}
 	
 }
